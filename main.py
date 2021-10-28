@@ -6,13 +6,15 @@ pygame.mixer.init()
 
 info = pygame.display.Info()
 screen_width, screen_height = info.current_w, info.current_h
-game_window = pygame.display.set_mode((screen_width, screen_height))
+game_window = pygame.display.set_mode((screen_width-350, screen_height-60))
 pygame.display.set_caption("Direction Game")
 game_surface = pygame.Surface((2000, 2000))
 game_surface.fill((255, 255, 255))
 game_window.blit(game_surface, (0, 0))
 
+
 # Constants
+IMAGE_SIZE = (200, 200)
 MOVE_DISTANCE = 125
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)
@@ -30,30 +32,105 @@ turn_left = pygame.mixer.Sound("left.ogg")
 turn_right = pygame.mixer.Sound("right.ogg")
 
 # Pictures
+road = pygame.image.load("pictures/road_test.png")
+
 heart_raw = pygame.image.load("heart.png")
 heart = pygame.transform.scale(heart_raw, (100, 100))
+bookstore_raw = pygame.image.load("pictures/bookstore.png")
+bookstore = pygame.transform.scale(bookstore_raw, IMAGE_SIZE)
+combini_raw = pygame.image.load("pictures/combini.png")
+combini = pygame.transform.scale(combini_raw, IMAGE_SIZE)
+department_raw = pygame.image.load("pictures/department.png")
+department = pygame.transform.scale(department_raw, IMAGE_SIZE)
+firestation_raw = pygame.image.load("pictures/firestation.png")
+firestation = pygame.transform.scale(firestation_raw, IMAGE_SIZE)
+flowershop_raw = pygame.image.load("pictures/flowershop.png")
+flowershop = pygame.transform.scale(flowershop_raw, IMAGE_SIZE)
+gasstation_raw = pygame.image.load("pictures/gasstation.png")
+gasstation = pygame.transform.scale(gasstation_raw, IMAGE_SIZE)
+gym_raw = pygame.image.load("pictures/gym.png")
+gym = pygame.transform.scale(gym_raw, IMAGE_SIZE)
+hospital_raw = pygame.image.load("pictures/hospital.png")
+hospital = pygame.transform.scale(hospital_raw, IMAGE_SIZE)
+library_raw = pygame.image.load("pictures/library.png")
+library = pygame.transform.scale(library_raw, IMAGE_SIZE)
+park_raw = pygame.image.load("pictures/park.png")
+park = pygame.transform.scale(park_raw, IMAGE_SIZE)
+police_raw = pygame.image.load("pictures/police.png")
+police = pygame.transform.scale(police_raw, IMAGE_SIZE)
+postoffice_raw = pygame.image.load("pictures/postoffice.png")
+postoffice = pygame.transform.scale(postoffice_raw, IMAGE_SIZE)
+restaurant_raw = pygame.image.load("pictures/restaurant.png")
+restaurant = pygame.transform.scale(restaurant_raw, IMAGE_SIZE)
+school_raw = pygame.image.load("pictures/school.png")
+school = pygame.transform.scale(school_raw, IMAGE_SIZE)
+station_raw = pygame.image.load("pictures/station.png")
+station = pygame.transform.scale(station_raw, IMAGE_SIZE)
+supermarket_raw = pygame.image.load("pictures/supermarket.png")
+supermarket = pygame.transform.scale(supermarket_raw, IMAGE_SIZE)
+temple_raw = pygame.image.load("pictures/temple.png")
+temple = pygame.transform.scale(temple_raw, IMAGE_SIZE)
+zoo_raw = pygame.image.load("pictures/zoo.png")
+zoo = pygame.transform.scale(zoo_raw, IMAGE_SIZE)
 
+picture_list = [bookstore, combini, department, firestation, flowershop, gasstation, gym, hospital, library, park,
+                police, postoffice, restaurant, school, station, supermarket, temple, zoo]
 # Font
 font = pygame.font.Font(None, 60)
 header_font = pygame.font.Font(None, 140)
 
-# Timer
-# clock = pygame.time.Clock()
-# counter = 10
-# clock_font = font.render(str(counter), True, (0, 128, 0))
-# timer_event = pygame.USEREVENT+1
-# pygame.time.set_timer(timer_event, 1000)
-
 
 class Building:
-    def __init__(self, x, y, color):
+    def __init__(self, x, y, pic):
         self.x = x
         self.y = y
-        self.color = color
+        self.pic = pic
+        self.word = "hrng"
         self.rect = pygame.Rect(self.x, self.y, 200, 200)
 
+    def assign_word(self):
+        if self.pic == bookstore:
+            self.word = "bookstore"
+        elif self.pic == combini:
+            self.word = "combini"
+        elif self.pic == department:
+            self.word = "department"
+        elif self.pic == firestation:
+            self.word = "firestation"
+        elif self.pic == flowershop:
+            self.word = "flowershop"
+        elif self.pic == gasstation:
+            self.word = "gasstation"
+        elif self.pic == gym:
+            self.word = "gym"
+        elif self.pic == hospital:
+            self.word = "hospital"
+        elif self.pic == library:
+            self.word = "library"
+        elif self.pic == park:
+            self.word = "park"
+        elif self.pic == police:
+            self.word = "police"
+        elif self.pic == postoffice:
+            self.word = "postoffice"
+        elif self.pic == restaurant:
+            self.word = "restaurant"
+        elif self.pic == school:
+            self.word = "school"
+        elif self.pic == station:
+            self.word = "station"
+        elif self.pic == supermarket:
+            self.word = "supermarket"
+        elif self.pic == temple:
+            self.word = "temple"
+        elif self.pic == zoo:
+            self.word = "zoo"
+
     def draw_building(self):
-        pygame.draw.rect(game_window, self.color, (self.x, self.y, 200, 200))
+        game_window.blit(road, (self.x - 50, self.y - 50))
+        pygame.draw.rect(game_window, (0, 0, 0), (self.x, self.y, 200, 200))
+        game_window.blit(self.pic, (self.x, self.y), )
+        pygame.draw.rect(game_window, BLACK, (self.x, self.y, 200, 200), 3)
 
 
 class Button:
@@ -70,8 +147,8 @@ class Button:
         pygame.draw.rect(game_window, BLACK, (self.x, self.y, self.width, self.height), 4)
 
 
-menu_button_1 = Button(550, 400)
-menu_button_2 = Button(550, 700)
+menu_button_1 = Button(485, 350)
+menu_button_2 = Button(485, 650)
 
 
 class Player:
@@ -83,15 +160,36 @@ class Player:
         self.rect = pygame.Rect(self.x, self.y, 50, 50)
 
     def draw_player(self):
-        pygame.draw.rect(game_window, self.color, (self.x, self.y, 50, 50))
         if player.facing == "right":
-            pygame.draw.rect(game_window, (120, 120, 120), (self.x + 40, self.y + 20, 10, 10))
+            pygame.draw.rect(game_window, self.color, (self.x, self.y + 9, 50, 30))
+            pygame.draw.rect(game_window, BLACK, (self.x, self.y + 9, 50, 30), 3)
+            pygame.draw.rect(game_window, (255, 255, 0), (self.x + 40, self.y + 10, 8, 8))
+            pygame.draw.rect(game_window, BLACK, (self.x + 40, self.y + 10, 8, 8), 1)
+            pygame.draw.rect(game_window, (255, 255, 0), (self.x + 40, self.y + 30, 8, 8))
+            pygame.draw.rect(game_window, BLACK, (self.x + 40, self.y + 30, 8, 8), 1)
+
         elif player.facing == "left":
-            pygame.draw.rect(game_window, (120, 120, 120), (self.x, self.y + 20, 10, 10))
+            pygame.draw.rect(game_window, self.color, (self.x, self.y + 9, 50, 30))
+            pygame.draw.rect(game_window, BLACK, (self.x, self.y + 9, 50, 30), 3)
+            pygame.draw.rect(game_window, (255, 255, 0), (self.x + 2, self.y + 10, 8, 8))
+            pygame.draw.rect(game_window, BLACK, (self.x + 2, self.y + 10, 8, 8), 1)
+            pygame.draw.rect(game_window, (255, 255, 0), (self.x + 2, self.y + 30, 8, 8))
+            pygame.draw.rect(game_window, BLACK, (self.x + 2, self.y + 30, 8, 8), 1)
+
         elif player.facing == "up":
-            pygame.draw.rect(game_window, (120, 120, 120), (self.x + 20, self.y, 10, 10))
+            pygame.draw.rect(game_window, self.color, (self.x + 9, self.y, 30, 50))
+            pygame.draw.rect(game_window, BLACK, (self.x + 9, self.y, 30, 50), 3)
+            pygame.draw.rect(game_window, (255, 255, 0), (self.x + 10, self.y + 2, 8, 8))
+            pygame.draw.rect(game_window, BLACK, (self.x + 10, self.y + 2, 8, 8), 1)
+            pygame.draw.rect(game_window, (255, 255, 0), (self.x + 30, self.y + 2, 8, 8))
+            pygame.draw.rect(game_window, BLACK, (self.x + 30, self.y + 2, 8, 8), 1)
         elif player.facing == "down":
-            pygame.draw.rect(game_window, (120, 120, 120), (self.x + 20, self.y + 40, 10, 10))
+            pygame.draw.rect(game_window, self.color, (self.x + 9, self.y, 30, 50))
+            pygame.draw.rect(game_window, BLACK, (self.x + 9, self.y, 30, 50), 3)
+            pygame.draw.rect(game_window, (255, 255, 0), (self.x + 10, self.y + 40, 8, 8))
+            pygame.draw.rect(game_window, BLACK, (self.x + 10, self.y + 40, 8, 8), 1)
+            pygame.draw.rect(game_window, (255, 255, 0), (self.x + 30, self.y + 40, 8, 8))
+            pygame.draw.rect(game_window, BLACK, (self.x + 30, self.y + 40, 8, 8), 1)
 
     def move_right(self, move):
         self.x = self.x + move
@@ -153,7 +251,7 @@ def find_a_way():
         move_list.append(move)
         global solution
         solution = True
-    elif ghost_player.x + move[0] < 0 or ghost_player.x + move[0] > 1100 or \
+    elif ghost_player.x + move[0] < 0 or ghost_player.x + move[0] > 1550 or \
             ghost_player.y + move[1] < 0 or ghost_player.y + move[1] > 800:
         find_a_way()
     else:
@@ -190,7 +288,8 @@ def reset():
     move_list = []
     move_list_string = []
     move_variable = 0
-    solution = False
+    if menu_selection == 1:
+        solution = False
 
 
 def increase_move_variable():
@@ -256,7 +355,7 @@ def increase_score():
 def display_score():
     scoreboard = font.render(f"Score:  {score}", True, (0, 0, 0), )
     # high_score_font = font.render(f"High Score: {high_score}", True, (0, 0, 0), )
-    game_window.blit(scoreboard, (10, 800))
+    game_window.blit(scoreboard, (10, 900))
     # game_window.blit(high_score_font, (10, 900))
 
 
@@ -300,26 +399,27 @@ def alter_moves_remaining():
 
 def display_menu():
     game_window.blit(game_surface, (0, 0))
-    pygame.draw.rect(game_window, (127, 255, 127), (500, 50, 700, 900))
-    pygame.draw.rect(game_window, BLACK, (500, 50, 700, 900), 7)
+    pygame.draw.rect(game_window, (127, 255, 127), (435, 50, 700, 900))
+    pygame.draw.rect(game_window, BLACK, (435, 50, 700, 900), 7)
     menu_button_1.draw_button()
     menu_button_2.draw_button()
     menu_title = header_font.render("Main Menu", True, (0, 0, 0), )
-    game_window.blit(menu_title, (584, 100))
+    game_window.blit(menu_title, (520, 100))
     game_type_font_1 = font.render("Commands", True, (0, 0, 0), )
-    game_window.blit(game_type_font_1, (510, 350))
+    game_window.blit(game_type_font_1, (455, 300))
     game_type_font_2 = font.render("Guidance", True, (0, 0, 0), )
-    game_window.blit(game_type_font_2, (510, 650))
+    game_window.blit(game_type_font_2, (455, 600))
     pygame.display.update()
 
 
 move_list = []
 move_list_string = []
 move_variable = 0
-building_coordinates = [(60, 60), (310, 60), (560, 60), (810, 60), (1060, 60), (60, 310), (310, 310), (560, 310),
-                        (810, 310), (1060, 310), (60, 560), (310, 560), (560, 560), (810, 560), (1060, 560)]
-player_start_coordinates = [(10, 10), (260, 10), (510, 10), (760, 10), (1010, 10), (10, 260), (10, 510), (10, 760),
-                            (260, 760), (510, 760), (760, 760)]
+building_coordinates = [(60, 60), (310, 60), (560, 60), (810, 60), (1060, 60), (1310, 60),
+                        (60, 310), (310, 310), (560, 310), (810, 310), (1060, 310), (1310, 310),
+                        (60, 560), (310, 560), (560, 560), (810, 560), (1060, 560), (1310, 560)]
+player_start_coordinates = [(10, 10), (260, 10), (510, 10), (760, 10), (1010, 10), (1260, 10), (10, 260),
+                            (10, 510), (10, 760), (260, 760), (510, 760), (760, 760), (1010, 760), (1260, 10)]
 coordinate_mirror = building_coordinates
 player = Player()
 health = 5
@@ -347,26 +447,29 @@ while running:
                     player.start_position()
                     ghost_player.x, ghost_player.y = player.x, player.y
                     random.shuffle(building_coordinates)
+                    random.shuffle(picture_list)
                     building_list = [
-                        Building(building_coordinates[x][0], building_coordinates[x][1], random.choice(color_list))
-                        for x in range(15)]
+                        Building(building_coordinates[x][0], building_coordinates[x][1], picture_list[x])
+                        for x in range(18)]
                     game_state = "a"
                 if menu_button_2.rect.collidepoint(event.pos):
+                    solution = True
                     menu_selection = 2
                     player.start_position()
-                    ghost_player.x, ghost_player.y = player.x, player.y
                     random.shuffle(building_coordinates)
                     building_list = [
-                        Building(building_coordinates[x][0], building_coordinates[x][1], random.choice(color_list))
-                        for x in range(15)]
+                        Building(building_coordinates[x][0], building_coordinates[x][1], picture_list[x])
+                        for x in range(18)]
+                    for buildings in building_list:
+                        buildings.assign_word()
                     game_state = "a"
     elif game_state == "a":
         game_window.blit(game_surface, (0, 0))
-        player.draw_player()
         answer = random.choice(building_list)
-        answer.color = (120, 120, 120)
+        pygame.draw.rect(game_window, BLACK, (0, 0, 1570, 810), 20)
         for items in building_list:
             items.draw_building()
+        player.draw_player()
         pygame.display.update()
         game_state = "b"
     elif game_state == "b":
@@ -382,7 +485,7 @@ while running:
                     move_list_string.append("up")
             game_state = "sound"
         else:
-            if len(move_list) > 8:
+            if len(move_list) > 13:
                 move_list = []
                 ghost_player.x, ghost_player.y = player.x, player.y
             else:
@@ -392,7 +495,7 @@ while running:
             play_direction_sound()
             game_state = "Game: commands"
         elif menu_selection == 2:
-            moves_remaining = 8
+            moves_remaining = 9
             game_state = "Game: directions"
 # Game Mode 1
     elif game_state == "Game: commands":
@@ -404,7 +507,7 @@ while running:
                 if event.key == pygame.K_d:
                     if move_list_string[move_variable] == "right":
                         player.move_right(MOVE_DISTANCE)
-                        if player.x > 1150:
+                        if player.x > 1550:
                             player.move_left(MOVE_DISTANCE)
                         elif player.x == answer.x + 75 and player.y == answer.y + 200:
                             reset()
@@ -416,6 +519,7 @@ while running:
                     else:
                         health = alter_health()
                         display_health()
+                    pygame.draw.rect(game_window, BLACK, (0, 0, 1570, 810), 20)
                     for items in building_list:
                         items.draw_building()
                     pygame.display.update()
@@ -433,6 +537,7 @@ while running:
                             game_state = "sound"
                     else:
                         health = alter_health()
+                    pygame.draw.rect(game_window, BLACK, (0, 0, 1570, 810), 20)
                     for items in building_list:
                         items.draw_building()
                     pygame.display.update()
@@ -451,6 +556,7 @@ while running:
                             game_state = "sound"
                     else:
                         health = alter_health()
+                    pygame.draw.rect(game_window, BLACK, (0, 0, 1570, 810), 20)
                     for items in building_list:
                         items.draw_building()
                     pygame.display.update()
@@ -469,12 +575,18 @@ while running:
                             game_state = "sound"
                     else:
                         health = alter_health()
+                    pygame.draw.rect(game_window, BLACK, (0, 0, 1570, 810), 20)
                     for items in building_list:
                         items.draw_building()
             if event.type == pygame.QUIT:
                 running = False
 # Game Mode 2
     elif game_state == "Game: directions":
+        winning_font_boys = font.render(f"{answer.word}", True, (0, 0, 0), )
+        # high_score_font = font.render(f"High Score: {high_score}", True, (0, 0, 0), )
+        game_window.blit(winning_font_boys, (300, 900))
+        display_moves_remaining = font.render(f"{moves_remaining} moves left", True, (0, 0, 0), )
+        game_window.blit(display_moves_remaining, (600, 900))
         display_score()
         player.draw_player()
         pygame.display.update()
@@ -484,7 +596,7 @@ while running:
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_d:
                     player.move_right(MOVE_DISTANCE)
-                    if player.x > 1150:
+                    if player.x > 1550:
                         player.move_left(MOVE_DISTANCE)
                     elif player.x == answer.x + 75 and player.y == answer.y + 200:
                         reset()
@@ -492,6 +604,7 @@ while running:
                     else:
                         player.move_right(MOVE_DISTANCE)
                         moves_remaining = alter_moves_remaining()
+                    pygame.draw.rect(game_window, BLACK, (0, 0, 1570, 810), 20)
                     for items in building_list:
                         items.draw_building()
                     pygame.display.update()
@@ -505,6 +618,7 @@ while running:
                     else:
                         player.move_left(MOVE_DISTANCE)
                         moves_remaining = alter_moves_remaining()
+                    pygame.draw.rect(game_window, BLACK, (0, 0, 1570, 810), 20)
                     for items in building_list:
                         items.draw_building()
                     pygame.display.update()
@@ -518,6 +632,7 @@ while running:
                     else:
                         player.move_up(MOVE_DISTANCE)
                         moves_remaining = alter_moves_remaining()
+                    pygame.draw.rect(game_window, BLACK, (0, 0, 1570, 810), 20)
                     for items in building_list:
                         items.draw_building()
                     pygame.display.update()
@@ -532,6 +647,7 @@ while running:
                     else:
                         player.move_down(MOVE_DISTANCE)
                         moves_remaining = alter_moves_remaining()
+                    pygame.draw.rect(game_window, BLACK, (0, 0, 1570, 810), 20)
                     for items in building_list:
                         items.draw_building()
                     pygame.display.update()
@@ -540,5 +656,6 @@ while running:
                 game_state = "menu"
 
 # TODO
-# add a timer
-# figure out where it might be best to put the display health
+# Record "I want to go to dokodoko"
+# Make my road pretty
+# High Score
