@@ -13,11 +13,11 @@ pygame.mixer.init()
 info = pygame.display.Info()
 screen_width, screen_height = info.current_w, info.current_h
 if screen_width == 1280:
-    window_width, window_height = screen_width-495, screen_height - 300
+    window_width, window_height = screen_width-495, screen_height - 280
     resize_factor = (1/2)
 elif screen_width == 1680:
     window_width, window_height = screen_width - 110, screen_height - 60
-    resize_factor = 1
+    resize_factor = 1/2
 else:
     window_width, window_height = screen_width - 350, screen_height - 60
     resize_factor = 1
@@ -49,6 +49,9 @@ color_list = [RED, BLUE, GREEN, YELLOW, TURQUOISE, PURPLE, PINK]
 go_straight = pygame.mixer.Sound("audio/straight.ogg")
 turn_left = pygame.mixer.Sound("audio/left.ogg")
 turn_right = pygame.mixer.Sound("audio/right.ogg")
+go_straight_woman = pygame.mixer.Sound("audio/go_straight_woman.ogg")
+turn_left_woman = pygame.mixer.Sound("audio/turn_left_woman.ogg")
+turn_right_woman = pygame.mixer.Sound("audio/turn_right_woman.ogg")
 
 bookstore_audio = pygame.mixer.Sound("audio/bookstore.ogg")
 combini_audio = pygame.mixer.Sound("audio/combini.ogg")
@@ -70,28 +73,43 @@ temple_audio = pygame.mixer.Sound("audio/temple.ogg")
 zoo_audio = pygame.mixer.Sound("audio/zoo.ogg")
 
 # Audio lists
-bookstore_list = [bookstore_audio]
-combini_list = [combini_audio]
-department_list = [department_audio]
-firestation_list = [firestation_audio]
-flowershop_list = [flowershop_audio]
-gasstation_list = [gasstation_audio]
-gym_list = [gym_audio]
-hospital_list = [hospital_audio]
-library_list = [library_audio]
-park_list = [park_audio]
-police_list = [police_audio]
-postoffice_list = [postoffice_audio]
-restaurant_list = [restaurant_audio]
-school_list = [school_audio]
-station_list = [station_audio]
-supermarket_list = [supermarket_audio]
-temple_list = [temple_audio]
-zoo_list = [zoo_audio]
+building_audio_dictionary = {
+    "bookstore": [bookstore_audio],
+    "combini": [combini_audio],
+    "department": [department_audio],
+    "firestation": [firestation_audio],
+    "flowershop": [flowershop_audio],
+    "gasstation": [gasstation_audio],
+    "gym": [gym_audio],
+    "hospital": [hospital_audio],
+    "library": [library_audio],
+    "park": [park_audio],
+    "police": [police_audio],
+    "postoffice": [postoffice_audio],
+    "restaurant": [restaurant_audio],
+    "school": [school_audio],
+    "station": [station_audio],
+    "supermarket": [supermarket_audio],
+    "temple": [temple_audio],
+    "zoo": [zoo_audio],
 
+}
 
+directions_dictionary = {
+    "man": [turn_left, turn_right, go_straight],
+    "woman": [turn_left_woman, turn_right_woman, go_straight_woman],
+}
+man_or_woman = ["woman", "man"]
 
 # Pictures
+modoru_raw = pygame.image.load("pictures/modoru.png")
+modoru = pygame.transform.scale(modoru_raw, IMAGE_SIZE)
+turn_left_raw = pygame.image.load("pictures/turn_left.png")
+turn_left_img = pygame.transform.scale(turn_left_raw, (int(214*resize_factor), int(112*resize_factor)))
+turn_right_raw = pygame.image.load("pictures/turn_right.png")
+turn_right_img = pygame.transform.scale(turn_right_raw, (int(214*resize_factor), int(112*resize_factor)))
+go_straight_raw = pygame.image.load("pictures/go_straight.png")
+go_straight_img = pygame.transform.scale(go_straight_raw, (int(112*resize_factor), int(172*resize_factor)))
 road_raw = pygame.image.load("pictures/road_test.png")
 road = pygame.transform.scale(road_raw, (int(300*resize_factor), int(300*resize_factor)))
 heart_raw = pygame.image.load("pictures/heart.png")
@@ -141,6 +159,7 @@ header_font = pygame.font.Font(None, int(140*resize_factor))
 timer_font = pygame.font.Font(None, int(150*resize_factor))
 
 
+# noinspection PyTypeChecker
 class Building:
     def __init__(self, x, y, pic):
         self.x = x
@@ -151,41 +170,41 @@ class Building:
 
     def assign_word(self):
         if self.pic == bookstore:
-            self.audio = random.choice(bookstore_list)
+            self.audio = random.choice(building_audio_dictionary["bookstore"])
         elif self.pic == combini:
-            self.audio = random.choice(combini_list)
+            self.audio = random.choice(building_audio_dictionary["combini"])
         elif self.pic == department:
-            self.audio = random.choice(department_list)
+            self.audio = random.choice(building_audio_dictionary["department"])
         elif self.pic == firestation:
-            self.audio = random.choice(firestation_list)
+            self.audio = random.choice(building_audio_dictionary["firestation"])
         elif self.pic == flowershop:
-            self.audio = random.choice(flowershop_list)
+            self.audio = random.choice(building_audio_dictionary["flowershop"])
         elif self.pic == gasstation:
-            self.audio = random.choice(gasstation_list)
+            self.audio = random.choice(building_audio_dictionary["gasstation"])
         elif self.pic == gym:
-            self.audio = random.choice(gym_list)
+            self.audio = random.choice(building_audio_dictionary["gym"])
         elif self.pic == hospital:
-            self.audio = random.choice(hospital_list)
+            self.audio = random.choice(building_audio_dictionary["hospital"])
         elif self.pic == library:
-            self.audio = random.choice(library_list)
+            self.audio = random.choice(building_audio_dictionary["library"])
         elif self.pic == park:
-            self.audio = random.choice(park_list)
+            self.audio = random.choice(building_audio_dictionary["park"])
         elif self.pic == police:
-            self.audio = random.choice(police_list)
+            self.audio = random.choice(building_audio_dictionary["police"])
         elif self.pic == postoffice:
-            self.audio = random.choice(postoffice_list)
+            self.audio = random.choice(building_audio_dictionary["postoffice"])
         elif self.pic == restaurant:
-            self.audio = random.choice(restaurant_list)
+            self.audio = random.choice(building_audio_dictionary["restaurant"])
         elif self.pic == school:
-            self.audio = random.choice(school_list)
+            self.audio = random.choice(building_audio_dictionary["school"])
         elif self.pic == station:
-            self.audio = random.choice(station_list)
+            self.audio = random.choice(building_audio_dictionary["station"])
         elif self.pic == supermarket:
-            self.audio = random.choice(supermarket_list)
+            self.audio = random.choice(building_audio_dictionary["supermarket"])
         elif self.pic == temple:
-            self.audio = random.choice(temple_list)
+            self.audio = random.choice(building_audio_dictionary["temple"])
         elif self.pic == zoo:
-            self.audio = random.choice(zoo_list)
+            self.audio = random.choice(building_audio_dictionary["zoo"])
 
     def draw_building(self):
         game_window.blit(road, (self.x - 50*resize_factor, self.y - 50*resize_factor))
@@ -194,6 +213,7 @@ class Building:
         pygame.draw.rect(game_window, BLACK, (self.x, self.y, 200*resize_factor, 200*resize_factor), 3)
 
 
+# noinspection PyTypeChecker
 class Button:
     def __init__(self, x, y):
         self.color = (220, 50, 113)
@@ -204,6 +224,7 @@ class Button:
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
 
     def draw_button(self):
+        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         pygame.draw.rect(game_window, self.color, (self.x, self.y, self.width, self.height))
         pygame.draw.rect(game_window, BLACK, (self.x, self.y, self.width, self.height), 4)
 
@@ -211,11 +232,22 @@ class Button:
 menu_button_1 = Button(485, 230)
 menu_button_2 = Button(485, 480)
 menu_button_3 = Button(485, 730)
-return_to_menu_button = Button(485, 830)
-return_to_menu_button.height = 150
+return_to_menu_button = Button(20, 840)
+return_to_menu_button.height = 190*resize_factor
+return_to_menu_button.width = 190*resize_factor
 return_to_menu_button.color = (220, 120, 50)
+turn_left_button = Button(479, 840)
+turn_left_button.width = 214*resize_factor
+turn_left_button.height = 112*resize_factor
+turn_right_button = Button(877, 840)
+turn_right_button.width = 214*resize_factor
+turn_right_button.height = 112*resize_factor
+go_straight_button = Button(729, 840)
+go_straight_button.width = 112*resize_factor
+go_straight_button.height = 172*resize_factor
 
 
+# noinspection PyTypeChecker
 class Player:
     def __init__(self):
         self.x = 10
@@ -365,49 +397,52 @@ def stop_sounds():
     pygame.mixer.Sound.stop(go_straight)
     pygame.mixer.Sound.stop(turn_left)
     pygame.mixer.Sound.stop(turn_right)
+    for buildings in building_list:
+        pygame.mixer.Sound.stop(buildings.audio)
 
 
 def play_direction_sound():
+    global voice_select
     if player.facing == "up":
         if move_list_string[move_variable] == "up":
             stop_sounds()
-            pygame.mixer.Sound.play(go_straight)
+            pygame.mixer.Sound.play(directions_dictionary[voice_select][2])
         elif move_list_string[move_variable] == "left":
             stop_sounds()
-            pygame.mixer.Sound.play(turn_left)
+            pygame.mixer.Sound.play(directions_dictionary[voice_select][0])
         elif move_list_string[move_variable] == "right":
             stop_sounds()
-            pygame.mixer.Sound.play(turn_right)
+            pygame.mixer.Sound.play(directions_dictionary[voice_select][1])
     elif player.facing == "down":
         if move_list_string[move_variable] == "left":
             stop_sounds()
-            pygame.mixer.Sound.play(turn_right)
+            pygame.mixer.Sound.play(directions_dictionary[voice_select][1])
         elif move_list_string[move_variable] == "right":
             stop_sounds()
-            pygame.mixer.Sound.play(turn_left)
+            pygame.mixer.Sound.play(directions_dictionary[voice_select][0])
         elif move_list_string[move_variable] == "down":
             stop_sounds()
-            pygame.mixer.Sound.play(go_straight)
+            pygame.mixer.Sound.play(directions_dictionary[voice_select][2])
     elif player.facing == "left":
         if move_list_string[move_variable] == "up":
             stop_sounds()
-            pygame.mixer.Sound.play(turn_right)
+            pygame.mixer.Sound.play(directions_dictionary[voice_select][1])
         elif move_list_string[move_variable] == "left":
             stop_sounds()
-            pygame.mixer.Sound.play(go_straight)
+            pygame.mixer.Sound.play(directions_dictionary[voice_select][2])
         elif move_list_string[move_variable] == "down":
             stop_sounds()
-            pygame.mixer.Sound.play(turn_left)
+            pygame.mixer.Sound.play(directions_dictionary[voice_select][0])
     elif player.facing == "right":
         if move_list_string[move_variable] == "up":
             stop_sounds()
-            pygame.mixer.Sound.play(turn_left)
+            pygame.mixer.Sound.play(directions_dictionary[voice_select][0])
         elif move_list_string[move_variable] == "right":
             stop_sounds()
-            pygame.mixer.Sound.play(go_straight)
+            pygame.mixer.Sound.play(directions_dictionary[voice_select][2])
         elif move_list_string[move_variable] == "down":
             stop_sounds()
-            pygame.mixer.Sound.play(turn_right)
+            pygame.mixer.Sound.play(directions_dictionary[voice_select][1])
 
 
 score = 0
@@ -438,6 +473,7 @@ def display_score():
     game_window.blit(scoreboard, (10, 830*resize_factor))
 
 
+# noinspection PyTypeChecker
 def display_health():
     display_score()
     if health == 5:
@@ -477,6 +513,9 @@ def alter_moves_remaining():
 
 
 def display_menu():
+    global high_score
+    global high_score_2
+
     game_window.blit(game_surface, (0, 0))
     pygame.draw.rect(game_window, (127, 255, 127), (435*resize_factor, 50*resize_factor, 700*resize_factor, 900*resize_factor))
     pygame.draw.rect(game_window, BLACK, (435*resize_factor, 50*resize_factor, 700*resize_factor, 900*resize_factor), 7)
@@ -486,10 +525,12 @@ def display_menu():
     menu_title = header_font.render("Main Menu", True, (0, 0, 0), )
     game_window.blit(menu_title, (520*resize_factor, 70*resize_factor))
     game_type_font_1 = font.render("Commands", True, (0, 0, 0), )
-    game_window.blit(game_type_font_1, (600*resize_factor, 180*resize_factor))
+    game_window.blit(game_type_font_1, (484*resize_factor, 180*resize_factor))
+    game_window.blit(font.render(f"High Score:  {high_score}", True, (0, 0, 0),), (812*resize_factor, 180*resize_factor))
+    game_window.blit(font.render(f"High Score:  {high_score_2}", True, (0, 0, 0),), (812*resize_factor, 430*resize_factor))
     game_type_font_2 = font.render("Guidance", True, (0, 0, 0), )
-    game_window.blit(game_type_font_2, (600*resize_factor, 430*resize_factor))
-    game_window.blit(font.render("Practice", True, (0, 0, 0), ), (600*resize_factor, 680*resize_factor))
+    game_window.blit(game_type_font_2, (484*resize_factor, 430*resize_factor))
+    game_window.blit(font.render("Practice", True, (0, 0, 0), ), (484*resize_factor, 680*resize_factor))
     pygame.display.update()
 
 
@@ -526,7 +567,6 @@ player = Player()
 health = 5
 ghost_player = Player()
 
-
 running = True
 game_state = "menu"
 
@@ -545,6 +585,7 @@ while running:
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if menu_button_1.rect.collidepoint(event.pos):
                     menu_selection = 1
+                    voice_select = random.choice(man_or_woman)
                     solution = False
                     move_variable = 0
                     move_list = []
@@ -556,6 +597,8 @@ while running:
                     building_list = [
                         Building(building_coordinates[x][0], building_coordinates[x][1], picture_list[x])
                         for x in range(18)]
+                    for buildings in building_list:
+                        buildings.assign_word()
                     game_state = "a"
                 if menu_button_2.rect.collidepoint(event.pos):
                     solution = True
@@ -612,6 +655,13 @@ while running:
             game_window.blit(game_surface, (0, 0))
             pygame.draw.rect(game_window, BLACK, (0, 0, 1570*resize_factor, 810*resize_factor), 20)
             return_to_menu_button.draw_button()
+            turn_left_button.draw_button()
+            turn_right_button.draw_button()
+            go_straight_button.draw_button()
+            game_window.blit(modoru, (16*resize_factor, 840*resize_factor))
+            game_window.blit(turn_left_img, (479*resize_factor, 840*resize_factor))
+            game_window.blit(turn_right_img, (877*resize_factor, 840*resize_factor))
+            game_window.blit(go_straight_img, (729*resize_factor, 840*resize_factor))
             for items in building_list:
                 items.draw_building()
             pygame.display.update()
@@ -621,8 +671,17 @@ while running:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if return_to_menu_button.rect.collidepoint(event.pos):
                     game_state = "menu"
+                elif turn_left_button.rect.collidepoint(event.pos):
+                    stop_sounds()
+                    pygame.mixer.Sound.play(directions_dictionary[random.choice(man_or_woman)][0])
+                elif turn_right_button.rect.collidepoint(event.pos):
+                    stop_sounds()
+                    pygame.mixer.Sound.play(directions_dictionary[random.choice(man_or_woman)][1])
+                elif go_straight_button.rect.collidepoint(event.pos):
+                    pygame.mixer.Sound.play(directions_dictionary[random.choice(man_or_woman)][2])
                 for buildings in building_list:
                     if buildings.rect.collidepoint(event.pos):
+                        stop_sounds()
                         pygame.mixer.Sound.play(buildings.audio)
                         buildings.assign_word()
             if event.type == pygame.QUIT:
@@ -657,6 +716,7 @@ while running:
                             player.move_left(MOVE_DISTANCE)
                         elif player.x == answer.x + 75*resize_factor and player.y == answer.y + 200*resize_factor:
                             reset()
+                            voice_select = random.choice(man_or_woman)
                             game_state = "a"
                         else:
                             player.move_right(MOVE_DISTANCE)
@@ -728,8 +788,6 @@ while running:
                 running = False
 # Game Mode 2
     elif game_state == "Game: directions":
-        # winning_font_boys = font.render(f"{answer.word}", True, (0, 0, 0), )
-        # game_window.blit(winning_font_boys, (300, 900))
         display_moves_remaining = font.render(f"{moves_remaining} moves left", True, (0, 0, 0), )
         game_window.blit(display_moves_remaining, (650*resize_factor, 850*resize_factor))
         if score < 5:
@@ -824,7 +882,9 @@ while running:
 
 # TODO
 
-# Make lists containing multiple recordings of the same location
-# Make a list of different directions (turn left, turn right, go straight) spoken by at least one other person
-# Make the high scores available at the main screen
 # Make some kind of sound or something that occurs when you get a point so that the kids know they did something right
+# Add some pictures to the opening menu maybe!
+# Continue adding voices into the application as they come into your google drive.
+# Goal is to have a functioning application by Monday.  We can test it at home.
+
+# STILL NEED TO FIX SHINKEISUIJAKU SELECTION BUG
