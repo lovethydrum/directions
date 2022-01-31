@@ -72,26 +72,83 @@ supermarket_audio = pygame.mixer.Sound("audio/supermarket.ogg")
 temple_audio = pygame.mixer.Sound("audio/temple.ogg")
 zoo_audio = pygame.mixer.Sound("audio/zoo.ogg")
 
+bookstore_jordan = pygame.mixer.Sound("audio/jordan/bookstore_jordan.ogg")
+combini_jordan = pygame.mixer.Sound("audio/jordan/combini_jordan.ogg")
+department_jordan = pygame.mixer.Sound("audio/jordan/department_jordan.ogg")
+firestation_jordan = pygame.mixer.Sound("audio/jordan/firestation_jordan.ogg")
+flowershop_jordan = pygame.mixer.Sound("audio/jordan/flowershop_jordan.ogg")
+gasstation_jordan = pygame.mixer.Sound("audio/jordan/gasstation_jordan.ogg")
+gym_jordan = pygame.mixer.Sound("audio/jordan/gym_jordan.ogg")
+hospital_jordan = pygame.mixer.Sound("audio/jordan/hospital_jordan.ogg")
+library_jordan = pygame.mixer.Sound("audio/jordan/library_jordan.ogg")
+park_jordan = pygame.mixer.Sound("audio/jordan/park_jordan.ogg")
+police_jordan = pygame.mixer.Sound("audio/jordan/police_jordan.ogg")
+postoffice_jordan = pygame.mixer.Sound("audio/jordan/postoffice_jordan.ogg")
+restaurant_jordan = pygame.mixer.Sound("audio/jordan/restaurant_jordan.ogg")
+school_jordan = pygame.mixer.Sound("audio/jordan/school_jordan.ogg")
+station_jordan = pygame.mixer.Sound("audio/jordan/station_jordan.ogg")
+supermarket_jordan = pygame.mixer.Sound("audio/jordan/supermarket_jordan.ogg")
+temple_jordan = pygame.mixer.Sound("audio/jordan/temple_jordan.ogg")
+zoo_jordan = pygame.mixer.Sound("audio/jordan/zoo_jordan.ogg")
+
+bookstore_joy = pygame.mixer.Sound("audio/joy/bookstore_joy.ogg")
+combini_joy = pygame.mixer.Sound("audio/joy/combini_joy.ogg")
+department_joy = pygame.mixer.Sound("audio/joy/department_joy.ogg")
+firestation_joy = pygame.mixer.Sound("audio/joy/firestation_joy.ogg")
+flowershop_joy = pygame.mixer.Sound("audio/joy/flowershop_joy.ogg")
+gasstation_joy = pygame.mixer.Sound("audio/joy/gasstation_joy.ogg")
+gym_joy = pygame.mixer.Sound("audio/joy/gym_joy.ogg")
+hospital_joy = pygame.mixer.Sound("audio/joy/hospital_joy.ogg")
+library_joy = pygame.mixer.Sound("audio/joy/library_joy.ogg")
+park_joy = pygame.mixer.Sound("audio/joy/park_joy.ogg")
+police_joy = pygame.mixer.Sound("audio/joy/police_joy.ogg")
+postoffice_joy = pygame.mixer.Sound("audio/joy/postoffice_joy.ogg")
+restaurant_joy = pygame.mixer.Sound("audio/joy/restaurant_joy.ogg")
+school_joy = pygame.mixer.Sound("audio/joy/school_joy.ogg")
+station_joy = pygame.mixer.Sound("audio/joy/station_joy.ogg")
+supermarket_joy = pygame.mixer.Sound("audio/joy/supermarket_joy.ogg")
+temple_joy = pygame.mixer.Sound("audio/joy/temple_joy.ogg")
+zoo_joy = pygame.mixer.Sound("audio/joy/zoo_joy.ogg")
+
+bookstore_shantilly = pygame.mixer.Sound("audio/shantilly/bookstore_shantilly.ogg")
+combini_shantilly = pygame.mixer.Sound("audio/shantilly/combini_shantilly.ogg")
+department_shantilly = pygame.mixer.Sound("audio/shantilly/department_shantilly.ogg")
+firestation_shantilly = pygame.mixer.Sound("audio/shantilly/firestation_shantilly.ogg")
+flowershop__shantilly = pygame.mixer.Sound("audio/shantilly/flowershop_shantilly.ogg")
+gasstation_shantilly = pygame.mixer.Sound("audio/shantilly/gasstation_shantilly.ogg")
+gym_shantilly = pygame.mixer.Sound("audio/shantilly/gym_shantilly.ogg")
+hospital_shantilly = pygame.mixer.Sound("audio/shantilly/hospital_shantilly.ogg")
+library_shantilly = pygame.mixer.Sound("audio/shantilly/library_shantilly.ogg")
+park_shantilly = pygame.mixer.Sound("audio/shantilly/park_shantilly.ogg")
+police_shantilly = pygame.mixer.Sound("audio/shantilly/police_shantilly.ogg")
+postoffice_shantilly = pygame.mixer.Sound("audio/shantilly/postoffice_shantilly.ogg")
+restaurant_shantilly = pygame.mixer.Sound("audio/shantilly/restaurant_shantilly.ogg")
+school_shantilly = pygame.mixer.Sound("audio/shantilly/school_shantilly.ogg")
+station_shantilly = pygame.mixer.Sound("audio/shantilly/station_shantilly.ogg")
+supermarket_shantilly = pygame.mixer.Sound("audio/shantilly/supermarket_shantilly.ogg")
+temple_shantilly = pygame.mixer.Sound("audio/shantilly/temple_shantilly.ogg")
+zoo_shantilly = pygame.mixer.Sound("audio/shantilly/zoo_shantilly.ogg")
+
 # Audio lists
 building_audio_dictionary = {
-    "bookstore": [bookstore_audio],
-    "combini": [combini_audio],
-    "department": [department_audio],
-    "firestation": [firestation_audio],
-    "flowershop": [flowershop_audio],
-    "gasstation": [gasstation_audio],
-    "gym": [gym_audio],
-    "hospital": [hospital_audio],
-    "library": [library_audio],
-    "park": [park_audio],
-    "police": [police_audio],
-    "postoffice": [postoffice_audio],
-    "restaurant": [restaurant_audio],
-    "school": [school_audio],
-    "station": [station_audio],
-    "supermarket": [supermarket_audio],
-    "temple": [temple_audio],
-    "zoo": [zoo_audio],
+    "bookstore": [bookstore_audio, bookstore_jordan, bookstore_joy, bookstore_shantilly],
+    "combini": [combini_audio, combini_jordan, combini_joy, combini_shantilly],
+    "department": [department_audio, department_jordan, department_joy, department_shantilly],
+    "firestation": [firestation_audio, firestation_jordan, firestation_joy, firestation_shantilly],
+    "flowershop": [flowershop_audio, flowershop_jordan, flowershop_joy, flowershop__shantilly],
+    "gasstation": [gasstation_audio, gasstation_jordan, gasstation_joy, gasstation_shantilly],
+    "gym": [gym_audio, gym_jordan, gym_joy, gym_shantilly],
+    "hospital": [hospital_audio, hospital_jordan, hospital_joy, hospital_shantilly],
+    "library": [library_audio, library_jordan, library_joy, library_shantilly],
+    "park": [park_audio, park_jordan, park_joy, park_shantilly],
+    "police": [police_audio, police_jordan, police_joy, police_shantilly],
+    "postoffice": [postoffice_audio, postoffice_jordan, postoffice_joy, postoffice_shantilly],
+    "restaurant": [restaurant_audio, restaurant_jordan, restaurant_joy, restaurant_shantilly],
+    "school": [school_audio, school_jordan, school_joy, school_shantilly],
+    "station": [station_audio, station_jordan, station_joy, station_shantilly],
+    "supermarket": [supermarket_audio, supermarket_jordan, supermarket_joy, supermarket_shantilly],
+    "temple": [temple_audio, temple_jordan, temple_joy, temple_shantilly],
+    "zoo": [zoo_audio, zoo_jordan, zoo_joy, zoo_shantilly],
 
 }
 
@@ -99,7 +156,7 @@ directions_dictionary = {
     "man": [turn_left, turn_right, go_straight],
     "woman": [turn_left_woman, turn_right_woman, go_straight_woman],
 }
-man_or_woman = ["woman", "man"]
+man_or_woman = ["woman", "man", "woman", "man", "man", "woman"]
 
 # Pictures
 modoru_raw = pygame.image.load("pictures/modoru.png")
@@ -682,8 +739,9 @@ while running:
                 for buildings in building_list:
                     if buildings.rect.collidepoint(event.pos):
                         stop_sounds()
-                        pygame.mixer.Sound.play(buildings.audio)
                         buildings.assign_word()
+                        stop_sounds()
+                        pygame.mixer.Sound.play(buildings.audio)
             if event.type == pygame.QUIT:
                 running = False
     elif game_state == "sound":
@@ -884,7 +942,5 @@ while running:
 
 # Make some kind of sound or something that occurs when you get a point so that the kids know they did something right
 # Add some pictures to the opening menu maybe!
-# Continue adding voices into the application as they come into your google drive.
-# Goal is to have a functioning application by Monday.  We can test it at home.
 
 # STILL NEED TO FIX SHINKEISUIJAKU SELECTION BUG
