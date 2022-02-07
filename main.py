@@ -46,12 +46,19 @@ PINK = (255, 125, 220)
 color_list = [RED, BLUE, GREEN, YELLOW, TURQUOISE, PURPLE, PINK]
 
 # Sounds
-go_straight = pygame.mixer.Sound("audio/straight.ogg")
-turn_left = pygame.mixer.Sound("audio/left.ogg")
-turn_right = pygame.mixer.Sound("audio/right.ogg")
-go_straight_woman = pygame.mixer.Sound("audio/go_straight_woman.ogg")
-turn_left_woman = pygame.mixer.Sound("audio/turn_left_woman.ogg")
-turn_right_woman = pygame.mixer.Sound("audio/turn_right_woman.ogg")
+ding = pygame.mixer.Sound("audio/ding.ogg")
+go_straight_man_1 = pygame.mixer.Sound("audio/go_straight_man_1.ogg")
+turn_left_man_1 = pygame.mixer.Sound("audio/turn_left_man_1.ogg")
+turn_right_man_1 = pygame.mixer.Sound("audio/turn_right_man_1.ogg")
+go_straight_man_2 = pygame.mixer.Sound("audio/go_straight_man_2.ogg")
+turn_left_man_2 = pygame.mixer.Sound("audio/turn_left_man_2.ogg")
+turn_right_man_2 = pygame.mixer.Sound("audio/turn_right_man_2.ogg")
+go_straight_woman_1 = pygame.mixer.Sound("audio/go_straight_woman.ogg")
+turn_left_woman_1 = pygame.mixer.Sound("audio/turn_left_woman.ogg")
+turn_right_woman_1 = pygame.mixer.Sound("audio/turn_right_woman.ogg")
+go_straight_woman_2 = pygame.mixer.Sound("audio/go_straight_woman_2.ogg")
+turn_left_woman_2 = pygame.mixer.Sound("audio/turn_left_woman_2.ogg")
+turn_right_woman_2 = pygame.mixer.Sound("audio/turn_right_woman_2.ogg")
 
 bookstore_audio = pygame.mixer.Sound("audio/bookstore.ogg")
 combini_audio = pygame.mixer.Sound("audio/combini.ogg")
@@ -153,12 +160,23 @@ building_audio_dictionary = {
 }
 
 directions_dictionary = {
-    "man": [turn_left, turn_right, go_straight],
-    "woman": [turn_left_woman, turn_right_woman, go_straight_woman],
+    "man 1": [turn_left_man_1, turn_right_man_1, go_straight_man_1],
+    "woman 1": [turn_left_woman_1, turn_right_woman_1, go_straight_woman_1],
+    "man 2": [turn_left_man_2, turn_right_man_2, go_straight_man_2],
+    "woman 2": [turn_left_woman_2, turn_right_woman_2, go_straight_woman_2]
 }
-man_or_woman = ["woman", "man", "woman", "man", "man", "woman"]
+man_or_woman = ["woman 1", "man 1", "woman 2", "man 2"]
+practice_2_random_list = [
+    "bookstore", "combini", "department", "firestation", "flowershop", "gasstation", "gym", "hospital", "library",
+    "park", "police", "postoffice", "restaurant", "school", "station", "supermarket", "temple", "zoo", "man 1", "man 2",
+    "woman 1", "woman 2"
+]
 
 # Pictures
+commands_raw = pygame.image.load("pictures/commands.png")
+commands = pygame.transform.scale(commands_raw, (int(600*resize_factor), int(180*resize_factor)))
+guidance_raw = pygame.image.load("pictures/guidance.png")
+guidance = pygame.transform.scale(guidance_raw, (int(580*resize_factor), int(178*resize_factor)))
 modoru_raw = pygame.image.load("pictures/modoru.png")
 modoru = pygame.transform.scale(modoru_raw, IMAGE_SIZE)
 turn_left_raw = pygame.image.load("pictures/turn_left.png")
@@ -216,61 +234,79 @@ header_font = pygame.font.Font(None, int(140*resize_factor))
 timer_font = pygame.font.Font(None, int(150*resize_factor))
 
 
-# noinspection PyTypeChecker
 class Building:
     def __init__(self, x, y, pic):
         self.x = x
         self.y = y
         self.pic = pic
         self.audio = "hrng"
+        self.name = ""
         self.rect = pygame.Rect(self.x, self.y, 200*resize_factor, 200*resize_factor)
 
     def assign_word(self):
         if self.pic == bookstore:
             self.audio = random.choice(building_audio_dictionary["bookstore"])
+            self.name = "bookstore"
         elif self.pic == combini:
             self.audio = random.choice(building_audio_dictionary["combini"])
+            self.name = "combini"
         elif self.pic == department:
             self.audio = random.choice(building_audio_dictionary["department"])
+            self.name = "department"
         elif self.pic == firestation:
             self.audio = random.choice(building_audio_dictionary["firestation"])
+            self.name = "firestation"
         elif self.pic == flowershop:
             self.audio = random.choice(building_audio_dictionary["flowershop"])
+            self.name = "flowershop"
         elif self.pic == gasstation:
             self.audio = random.choice(building_audio_dictionary["gasstation"])
+            self.name = "gasstation"
         elif self.pic == gym:
             self.audio = random.choice(building_audio_dictionary["gym"])
+            self.name = "gym"
         elif self.pic == hospital:
             self.audio = random.choice(building_audio_dictionary["hospital"])
+            self.name = "hospital"
         elif self.pic == library:
             self.audio = random.choice(building_audio_dictionary["library"])
+            self.name = "library"
         elif self.pic == park:
             self.audio = random.choice(building_audio_dictionary["park"])
+            self.name = "park"
         elif self.pic == police:
             self.audio = random.choice(building_audio_dictionary["police"])
+            self.name = "police"
         elif self.pic == postoffice:
             self.audio = random.choice(building_audio_dictionary["postoffice"])
+            self.name = "postoffice"
         elif self.pic == restaurant:
             self.audio = random.choice(building_audio_dictionary["restaurant"])
+            self.name = "restaurant"
         elif self.pic == school:
             self.audio = random.choice(building_audio_dictionary["school"])
+            self.name = "school"
         elif self.pic == station:
             self.audio = random.choice(building_audio_dictionary["station"])
+            self.name = "station"
         elif self.pic == supermarket:
             self.audio = random.choice(building_audio_dictionary["supermarket"])
+            self.name = "supermarket"
         elif self.pic == temple:
             self.audio = random.choice(building_audio_dictionary["temple"])
+            self.name = "temple"
         elif self.pic == zoo:
             self.audio = random.choice(building_audio_dictionary["zoo"])
+            self.name = "zoo"
 
     def draw_building(self):
         game_window.blit(road, (self.x - 50*resize_factor, self.y - 50*resize_factor))
         pygame.draw.rect(game_window, (0, 0, 0), (self.x, self.y, 200*resize_factor, 200*resize_factor))
         game_window.blit(self.pic, (self.x, self.y), )
         pygame.draw.rect(game_window, BLACK, (self.x, self.y, 200*resize_factor, 200*resize_factor), 3)
+        pygame.draw.rect(game_window, BLACK, (self.x + 80*resize_factor, self.y + 192*resize_factor, 40*resize_factor, 6*resize_factor))
 
 
-# noinspection PyTypeChecker
 class Button:
     def __init__(self, x, y):
         self.color = (220, 50, 113)
@@ -289,22 +325,27 @@ class Button:
 menu_button_1 = Button(485, 230)
 menu_button_2 = Button(485, 480)
 menu_button_3 = Button(485, 730)
-return_to_menu_button = Button(20, 840)
-return_to_menu_button.height = 190*resize_factor
-return_to_menu_button.width = 190*resize_factor
+menu_button_4 = Button(1200, 800)
+menu_button_4.height = 100*resize_factor
+menu_button_4.width = 100*resize_factor
+return_to_menu_button = Button(20, 830)
+return_to_menu_button.height = 180*resize_factor
+return_to_menu_button.width = 180*resize_factor
 return_to_menu_button.color = (220, 120, 50)
-turn_left_button = Button(479, 840)
+one_more_time_button = Button(1350, 830)
+one_more_time_button.width = 180*resize_factor
+one_more_time_button.height = 180*resize_factor
+turn_left_button = Button(479, 830)
 turn_left_button.width = 214*resize_factor
 turn_left_button.height = 112*resize_factor
-turn_right_button = Button(877, 840)
+turn_right_button = Button(877, 830)
 turn_right_button.width = 214*resize_factor
 turn_right_button.height = 112*resize_factor
-go_straight_button = Button(729, 840)
+go_straight_button = Button(729, 830)
 go_straight_button.width = 112*resize_factor
 go_straight_button.height = 172*resize_factor
 
 
-# noinspection PyTypeChecker
 class Player:
     def __init__(self):
         self.x = 10
@@ -430,12 +471,22 @@ def find_a_way():
                 ghost_player.facing = "up"
 
 
+def random_voice():
+    global voice_select
+    random_speaker = random.choice(man_or_woman)
+    if random_speaker == voice_select:
+        random_voice()
+    else:
+        voice_select = random_speaker
+
+
 def reset():
     global move_list
     global solution
     global move_list_string
     global move_variable
     global score
+    random_voice()
     score = increase_score()
     player.start_position()
     ghost_player.x, ghost_player.y, ghost_player.facing = player.x, player.y, player.facing
@@ -451,9 +502,19 @@ def increase_move_variable():
 
 
 def stop_sounds():
-    pygame.mixer.Sound.stop(go_straight)
-    pygame.mixer.Sound.stop(turn_left)
-    pygame.mixer.Sound.stop(turn_right)
+    pygame.mixer.Sound.stop(ding)
+    pygame.mixer.Sound.stop(go_straight_man_1)
+    pygame.mixer.Sound.stop(go_straight_man_2)
+    pygame.mixer.Sound.stop(go_straight_woman_1)
+    pygame.mixer.Sound.stop(go_straight_woman_2)
+    pygame.mixer.Sound.stop(turn_left_man_1)
+    pygame.mixer.Sound.stop(turn_left_man_2)
+    pygame.mixer.Sound.stop(turn_left_woman_1)
+    pygame.mixer.Sound.stop(turn_left_woman_2)
+    pygame.mixer.Sound.stop(turn_right_man_1)
+    pygame.mixer.Sound.stop(turn_right_man_2)
+    pygame.mixer.Sound.stop(turn_right_woman_1)
+    pygame.mixer.Sound.stop(turn_right_woman_2)
     for buildings in building_list:
         pygame.mixer.Sound.stop(buildings.audio)
 
@@ -577,8 +638,11 @@ def display_menu():
     pygame.draw.rect(game_window, (127, 255, 127), (435*resize_factor, 50*resize_factor, 700*resize_factor, 900*resize_factor))
     pygame.draw.rect(game_window, BLACK, (435*resize_factor, 50*resize_factor, 700*resize_factor, 900*resize_factor), 7)
     menu_button_1.draw_button()
+    game_window.blit(commands, (menu_button_1.x, menu_button_1.y))
     menu_button_2.draw_button()
+    game_window.blit(guidance, (menu_button_2.x+6, menu_button_2.y))
     menu_button_3.draw_button()
+    menu_button_4.draw_button()
     menu_title = header_font.render("Main Menu", True, (0, 0, 0), )
     game_window.blit(menu_title, (520*resize_factor, 70*resize_factor))
     game_type_font_1 = font.render("Commands", True, (0, 0, 0), )
@@ -589,6 +653,35 @@ def display_menu():
     game_window.blit(game_type_font_2, (484*resize_factor, 430*resize_factor))
     game_window.blit(font.render("Practice", True, (0, 0, 0), ), (484*resize_factor, 680*resize_factor))
     pygame.display.update()
+
+
+def score_menu():
+    pygame.mixer.Sound.play(ding)
+    game_window.blit(game_surface, (0, 0))
+    game_window.blit(timer_font.render(f"Next Question...", True, (0, 0, 0), ),
+                     (400 * resize_factor, 450 * resize_factor))
+    pygame.display.update()
+    pygame.time.delay(1300)
+
+
+def level_up_menu():
+    pygame.mixer.Sound.play(ding)
+    pygame.time.delay(100)
+    pygame.mixer.Sound.play(ding)
+    pygame.time.delay(100)
+    pygame.mixer.Sound.play(ding)
+    game_window.blit(game_surface, (0, 0))
+    game_window.blit(timer_font.render(f"LEVEL UP SCREEN HERE", True, (0, 0, 0), ),
+                     (200 * resize_factor, 450 * resize_factor))
+    pygame.display.update()
+    pygame.time.delay(1000)
+
+
+def game_over_menu():
+    game_window.blit(game_surface, (0, 0))
+    game_window.blit(timer_font.render(f"Game Over!", True, (0, 0, 0), ), (450 * resize_factor, 450 * resize_factor))
+    pygame.display.update()
+    pygame.time.delay(2000)
 
 
 move_list = []
@@ -623,7 +716,6 @@ coordinate_mirror = building_coordinates
 player = Player()
 health = 5
 ghost_player = Player()
-
 running = True
 game_state = "menu"
 
@@ -633,16 +725,16 @@ while running:
         score = 0
         counter = 22
         health = 5
-        game_state = "menu"
+        game_state = "game over"
     if game_state == "menu":
         display_menu()
+        voice_select = random.choice(man_or_woman)
         for event in ev:
             if event.type == pygame.QUIT:
                 running = False
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if menu_button_1.rect.collidepoint(event.pos):
                     menu_selection = 1
-                    voice_select = random.choice(man_or_woman)
                     solution = False
                     move_variable = 0
                     move_list = []
@@ -656,7 +748,7 @@ while running:
                         for x in range(18)]
                     for buildings in building_list:
                         buildings.assign_word()
-                    game_state = "a"
+                    game_state = "transition"
                 if menu_button_2.rect.collidepoint(event.pos):
                     solution = True
                     menu_selection = 2
@@ -667,7 +759,7 @@ while running:
                         for x in range(18)]
                     for buildings in building_list:
                         buildings.assign_word()
-                    game_state = "a"
+                    game_state = "transition"
                 if menu_button_3.rect.collidepoint(event.pos):
                     menu_selection = 3
                     solution = True
@@ -678,7 +770,17 @@ while running:
                     for buildings in building_list:
                         buildings.assign_word()
                         game_state = "b"
-    elif game_state == "a":
+                if menu_button_4.rect.collidepoint(event.pos):
+                    menu_selection = 4
+                    solution = True
+                    random.shuffle(building_coordinates)
+                    building_list = [
+                        Building(building_coordinates[x][0], building_coordinates[x][1], picture_list[x])
+                        for x in range(18)]
+                    for buildings in building_list:
+                        buildings.assign_word()
+                        game_state = "b"
+    elif game_state == "transition":
         game_window.blit(game_surface, (0, 0))
         answer = random.choice(building_list)
         pygame.draw.rect(game_window, BLACK, (0, 0, 1570*resize_factor, 810*resize_factor), 20)
@@ -715,14 +817,39 @@ while running:
             turn_left_button.draw_button()
             turn_right_button.draw_button()
             go_straight_button.draw_button()
-            game_window.blit(modoru, (16*resize_factor, 840*resize_factor))
-            game_window.blit(turn_left_img, (479*resize_factor, 840*resize_factor))
-            game_window.blit(turn_right_img, (877*resize_factor, 840*resize_factor))
-            game_window.blit(go_straight_img, (729*resize_factor, 840*resize_factor))
+            game_window.blit(modoru, (10*resize_factor, 830*resize_factor))
+            game_window.blit(turn_left_img, (479*resize_factor, 830*resize_factor))
+            game_window.blit(turn_right_img, (877*resize_factor, 830*resize_factor))
+            game_window.blit(go_straight_img, (729*resize_factor, 830*resize_factor))
             for items in building_list:
                 items.draw_building()
             pygame.display.update()
             game_state = "practice"
+        elif menu_selection == 4:
+            random_key = random.choice(practice_2_random_list)
+            if random_key == "man 1" or random_key == "man 2" or random_key == "woman 1" or random_key == "woman 2":
+                dictionary = directions_dictionary
+                practice_answer = random.choice(dictionary[random_key])
+            else:
+                dictionary = building_audio_dictionary
+                practice_answer = random.choice(dictionary[random_key])
+            pygame.mixer.Sound.play(practice_answer)
+            game_window.blit(game_surface, (0, 0))
+            pygame.draw.rect(game_window, BLACK, (0, 0, 1570 * resize_factor, 810 * resize_factor), 20)
+            return_to_menu_button.draw_button()
+            turn_left_button.draw_button()
+            turn_right_button.draw_button()
+            go_straight_button.draw_button()
+            one_more_time_button.draw_button()
+            game_window.blit(modoru, (10 * resize_factor, 830 * resize_factor))
+            game_window.blit(turn_left_img, (479 * resize_factor, 830 * resize_factor))
+            game_window.blit(turn_right_img, (877 * resize_factor, 830 * resize_factor))
+            game_window.blit(go_straight_img, (729 * resize_factor, 830 * resize_factor))
+            for items in building_list:
+                items.draw_building()
+                items.assign_word()
+            pygame.display.update()
+            game_state = "practice 2"
     elif game_state == "practice":
         for event in ev:
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -735,6 +862,7 @@ while running:
                     stop_sounds()
                     pygame.mixer.Sound.play(directions_dictionary[random.choice(man_or_woman)][1])
                 elif go_straight_button.rect.collidepoint(event.pos):
+                    stop_sounds()
                     pygame.mixer.Sound.play(directions_dictionary[random.choice(man_or_woman)][2])
                 for buildings in building_list:
                     if buildings.rect.collidepoint(event.pos):
@@ -742,6 +870,53 @@ while running:
                         buildings.assign_word()
                         stop_sounds()
                         pygame.mixer.Sound.play(buildings.audio)
+            if event.type == pygame.QUIT:
+                running = False
+    elif game_state == "practice 2":
+        for event in ev:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if return_to_menu_button.rect.collidepoint(event.pos):
+                    game_state = "menu"
+                elif one_more_time_button.rect.collidepoint(event.pos):
+                    stop_sounds()
+                    pygame.mixer.Sound.play(practice_answer)
+                elif turn_left_button.rect.collidepoint(event.pos):
+                    stop_sounds()
+                    for speakers in man_or_woman:
+                        if directions_dictionary[speakers][0] == practice_answer:
+                            pygame.mixer.Sound.play(ding)
+                            print("yeah")
+                            game_state = "score"
+                        else:
+                            print("nah")
+                elif turn_right_button.rect.collidepoint(event.pos):
+                    stop_sounds()
+                    for speakers in man_or_woman:
+                        if directions_dictionary[speakers][1] == practice_answer:
+                            pygame.mixer.Sound.play(ding)
+                            print("yeah")
+                            game_state = "score"
+                        else:
+                            print("nah")
+                elif go_straight_button.rect.collidepoint(event.pos):
+                    stop_sounds()
+                    for speakers in man_or_woman:
+                        if directions_dictionary[speakers][2] == practice_answer:
+                            pygame.mixer.Sound.play(ding)
+                            print("yeah")
+                            game_state = "score"
+                        else:
+                            print("nah")
+                for buildings in building_list:
+                    if buildings.rect.collidepoint(event.pos):
+                        for items in building_audio_dictionary[buildings.name]:
+                            if items == practice_answer:
+                                pygame.mixer.Sound.play(ding)
+                                print("yeah")
+                                game_state = "score"
+                            else:
+                                print("nah")
+
             if event.type == pygame.QUIT:
                 running = False
     elif game_state == "sound":
@@ -760,6 +935,16 @@ while running:
                 counter = 7
             moves_remaining = 10
             game_state = "Game: directions"
+    elif game_state == "score":
+        if menu_selection == 2:
+            level_up_menu()
+            game_state = "transition"
+        else:
+            score_menu()
+            game_state = "transition"
+    elif game_state == "game over":
+        game_over_menu()
+        game_state = "menu"
 # Game Mode 1
     elif game_state == "Game: commands":
         display_health()
@@ -767,15 +952,14 @@ while running:
         pygame.display.update()
         for event in ev:
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_d:
+                if event.key == pygame.K_RIGHT:
                     if move_list_string[move_variable] == "right":
                         player.move_right(MOVE_DISTANCE)
                         if player.x > 1550*resize_factor:
                             player.move_left(MOVE_DISTANCE)
                         elif player.x == answer.x + 75*resize_factor and player.y == answer.y + 200*resize_factor:
                             reset()
-                            voice_select = random.choice(man_or_woman)
-                            game_state = "a"
+                            game_state = "score"
                         else:
                             player.move_right(MOVE_DISTANCE)
                             move_variable = increase_move_variable()
@@ -787,14 +971,14 @@ while running:
                     for items in building_list:
                         items.draw_building()
                     pygame.display.update()
-                elif event.key == pygame.K_a:
+                elif event.key == pygame.K_LEFT:
                     if move_list_string[move_variable] == "left":
                         player.move_left(MOVE_DISTANCE)
                         if player.x < 0:
                             player.move_right(MOVE_DISTANCE)
                         elif player.x == answer.x + 75*resize_factor and player.y == answer.y + 200*resize_factor:
                             reset()
-                            game_state = "a"
+                            game_state = "score"
                         else:
                             player.move_left(MOVE_DISTANCE)
                             move_variable = increase_move_variable()
@@ -805,15 +989,14 @@ while running:
                     for items in building_list:
                         items.draw_building()
                     pygame.display.update()
-                elif event.key == pygame.K_w:
+                elif event.key == pygame.K_UP:
                     if move_list_string[move_variable] == "up":
                         player.move_up(MOVE_DISTANCE)
                         if player.y < 0:
                             player.move_down(MOVE_DISTANCE)
                         elif player.x == answer.x + 75*resize_factor and player.y == answer.y + 200*resize_factor:
                             reset()
-                            # answer.color = random.choice(color_list)
-                            game_state = "a"
+                            game_state = "score"
                         else:
                             player.move_up(MOVE_DISTANCE)
                             move_variable = increase_move_variable()
@@ -824,15 +1007,14 @@ while running:
                     for items in building_list:
                         items.draw_building()
                     pygame.display.update()
-                elif event.key == pygame.K_s:
+                elif event.key == pygame.K_DOWN:
                     if move_list_string[move_variable] == "down":
                         player.move_down(MOVE_DISTANCE)
                         if player.y > 800:
                             player.move_up(MOVE_DISTANCE)
                         elif player.x == answer.x + 75*resize_factor and player.y == answer.y + 200*resize_factor:
                             reset()
-                            # answer.color = random.choice(color_list)
-                            game_state = "a"
+                            game_state = "score"
                         else:
                             player.move_down(MOVE_DISTANCE)
                             move_variable = increase_move_variable()
@@ -877,13 +1059,16 @@ while running:
             if event.type == pygame.QUIT:
                 running = False
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_d:
+                if event.key == pygame.K_RIGHT:
                     player.move_right(MOVE_DISTANCE)
                     if player.x > 1550*resize_factor:
                         player.move_left(MOVE_DISTANCE)
                     elif player.x == answer.x + 75*resize_factor and player.y == answer.y + 200*resize_factor:
                         reset()
-                        game_state = "a"
+                        if score == 5 or score == 10 or score == 15:
+                            game_state = "score"
+                        else:
+                            game_state = "transition"
                     else:
                         player.move_right(MOVE_DISTANCE)
                         moves_remaining = alter_moves_remaining()
@@ -891,13 +1076,16 @@ while running:
                     for items in building_list:
                         items.draw_building()
                     pygame.display.update()
-                elif event.key == pygame.K_a:
+                elif event.key == pygame.K_LEFT:
                     player.move_left(MOVE_DISTANCE)
                     if player.x < 0:
                         player.move_right(MOVE_DISTANCE)
                     elif player.x == answer.x + 75*resize_factor and player.y == answer.y + 200*resize_factor:
                         reset()
-                        game_state = "a"
+                        if score == 5 or score == 10 or score == 15:
+                            game_state = "score"
+                        else:
+                            game_state = "transition"
                     else:
                         player.move_left(MOVE_DISTANCE)
                         moves_remaining = alter_moves_remaining()
@@ -905,13 +1093,16 @@ while running:
                     for items in building_list:
                         items.draw_building()
                     pygame.display.update()
-                elif event.key == pygame.K_w:
+                elif event.key == pygame.K_UP:
                     player.move_up(MOVE_DISTANCE)
                     if player.y < 0:
                         player.move_down(MOVE_DISTANCE)
                     elif player.x == answer.x + 75*resize_factor and player.y == answer.y + 200*resize_factor:
                         reset()
-                        game_state = "a"
+                        if score == 5 or score == 10 or score == 15:
+                            game_state = "score"
+                        else:
+                            game_state = "transition"
                     else:
                         player.move_up(MOVE_DISTANCE)
                         moves_remaining = alter_moves_remaining()
@@ -919,13 +1110,16 @@ while running:
                     for items in building_list:
                         items.draw_building()
                     pygame.display.update()
-                elif event.key == pygame.K_s:
+                elif event.key == pygame.K_DOWN:
                     player.move_down(MOVE_DISTANCE)
                     if player.y > 800*resize_factor:
                         player.move_up(MOVE_DISTANCE)
                     elif player.x == answer.x + 75*resize_factor and player.y == answer.y + 200*resize_factor:
                         reset()
-                        game_state = "a"
+                        if score == 5 or score == 10 or score == 15:
+                            game_state = "score"
+                        else:
+                            game_state = "transition"
                     else:
                         player.move_down(MOVE_DISTANCE)
                         moves_remaining = alter_moves_remaining()
@@ -933,14 +1127,25 @@ while running:
                     for items in building_list:
                         items.draw_building()
                     pygame.display.update()
-            elif moves_remaining == 0:
+            elif moves_remaining <= 0:
                 score = 0
                 menu_selection = 0
-                game_state = "menu"
+                game_state = "game over"
 
 # TODO
 
-# Make some kind of sound or something that occurs when you get a point so that the kids know they did something right
-# Add some pictures to the opening menu maybe!
+# Potential game changes:
+# 1: Do we want to have a ding added to the directions game?
+# 2: Do we want to have the Commands game say the direction again if they miss the direction?
+# 3: Do we want different colors for the different practices?
+
+# (I would really like some kind of original art for the opening menu) - Evan contacted
+
+# Some kind of description on how to play each version of the game, built into the application
+# Find a ding, game over, and level up sound
+# Re-record your own voice files
+# Normalize sound files
+
+
 
 # STILL NEED TO FIX SHINKEISUIJAKU SELECTION BUG
